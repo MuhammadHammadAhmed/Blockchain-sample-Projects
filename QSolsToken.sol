@@ -11,7 +11,7 @@ pragma solidity ^0.4.24;
 //
 // Enjoy.
 //
-// (c) by Moritz Neto & Daniel Bar with BokkyPooBah / Bok Consulting Pty Ltd Au 2017. The MIT Licence.
+
 // ----------------------------------------------------------------------------
 
 import "./SafeMath.sol";
