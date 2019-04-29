@@ -1,0 +1,6 @@
+query getFunded{
+    description: "Select all Funded exposure"
+    statement:
+        SELECT org.example.basic.Facility
+            WHERE (_$facilityType == "Funded")
+}

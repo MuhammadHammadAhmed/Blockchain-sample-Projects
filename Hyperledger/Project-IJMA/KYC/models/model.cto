@@ -1,0 +1,66 @@
+
+ 
+//namespace org.ijma.network
+namespace org.example.basic
+enum  Type {
+  o Funded
+  o NonFunded
+}
+//facilityas an assets
+asset Facility identified by facilityId {
+  o String facilityId
+  o String facilityName
+  o Type facilityType
+  o Double rate
+o Integer limit
+o Integer outstanding
+o DateTime expiry
+}
+
+asset BBFS identified by ntn {
+  o String ntn
+  o Integer fundedLimits
+  o Integer nonFundedLimits
+   o Integer fundedOutstanding
+  o Integer nonFundedOutstanding
+
+}
+asset SampleAsset identified by assetId {
+  o String assetId
+  --> SampleParticipant owner
+  o String value
+}
+
+participant SampleParticipant identified by bankId {
+  o String bankId
+  o String firstName
+  o String lastName
+}
+participant Bank identified by participantId {
+  o String participantId
+  o String firstName
+  o String lastName
+}
+
+transaction SampleTransaction {
+  --> SampleAsset asset
+  o String newValue
+}
+transaction updateBBFS {
+  --> BBFS bbfs
+}
+ transaction addFacility {
+   //--> Facility facility
+   o String facilityId
+  o String facilityName
+  o Type facilityType
+  o Double rate
+o Integer limit
+o Integer outstanding
+o DateTime expiry
+ }
+event SampleEvent {
+  --> SampleAsset asset
+  o String oldValue
+  o String newValue
+}
