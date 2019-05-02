@@ -1,12 +1,11 @@
 
  
-//namespace org.ijma.network
 namespace org.example.basic
 enum  Type {
   o Funded
   o NonFunded
 }
-//facilityas an assets
+//facility as an assets
 asset Facility identified by facilityId {
   o String facilityId
   o String facilityName
