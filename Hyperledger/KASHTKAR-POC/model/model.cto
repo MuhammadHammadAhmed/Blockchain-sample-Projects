@@ -17,7 +17,8 @@
  */
 namespace org.example.basic
 //namespace org.kashtkar.network
-/* Custom Dara types used in the project
+/* Custom Dara types used in the project---------------------
+it includes FarmProduct, Unit
 */
 // enum to define Type of Product
 enum FarmProduct{
@@ -34,8 +35,13 @@ enum Unit {
   o lbs
  
 }
+enum Signature {
+  o unsigned
+  o signed
+}
 enum Status{
   o instantiated
+  o waad
   o Issued
   o Sold
   o Redeem
@@ -45,7 +51,26 @@ enum ParticipantType {
   o Financier
   o Supplier
 }
+/* -----end of custom Data types--*/
 
+/*----Start of Assets--
+it includes Murabaha,FarmInput,bookAsset
+*/
+
+//Murabaha contract as Asset
+asset Murabaha identified by contractId{
+  o String contractId
+  o DateTime contractDate
+  --> member seller
+  --> member buyer
+  --> FarmInput asset
+  o Integer costPrice
+  o Integer sellingPrice
+  o DateTime paymentDate
+  o Signature sellerSignature
+  o Signature buyerSignature
+}
+//Farm input as an Asset
 asset FarmInput identified by productId {
   o String productId
   o FarmProduct product
@@ -53,16 +78,30 @@ asset FarmInput identified by productId {
   o Integer quantity
   o Unit unit
   o Integer costPrice
+  o Integer currentPrice optional
   --> member issuer
   -->member currentOwner
+  --> member authorized  optional
   
 }
+/* End of Assets---*/
+
+/*-- Participants of the Network--*/
 participant member identified by ntn{
   o String Name
   o String ntn
   o ParticipantType  memberType
 }
-transaction issueFarmInput {
+/*-----Transactions pertaining to the network----
+it includes
+initFarmInput,bookAsset,requestAsset,initMurabaha, acceptMurabaha
+*/
+ //reserve asset by the financier
+transaction bookAsset {
+  -->FarmInput underlyingAsset
+  --> member buyer
+}
+transaction initFarmInput {
   o String productId
   o FarmProduct product
   -->member issuer
@@ -72,8 +111,22 @@ transaction issueFarmInput {
   
    
 }
-  
+  transaction requestAsset {
+    --> member buyer
+    --> FarmInput  underlyingAsset
+  }
+transaction initMurabaha {
 
+  --> member buyer
+  --> FarmInput underlyingAsset
+ 
+}
+ transaction acceptMurabaha {
+   -->Murabaha contract
+   -->member farmer
+ }
+/*---End of Assets---*/
+/*
 participant SampleParticipant identified by participantId {
   o String participantId
   o String firstName
@@ -89,4 +142,26 @@ event SampleEvent {
  // --> SampleAsset asset
   o String oldValue
   o String newValue
+}*/
+/*---Start of Events---------*/
+
+event BookFarmInput {
+ --> FarmInput asset
+ --> member financier
+  
+}
+event AssetRequested {
+ --> FarmInput asset
+  --> member buer
+  
+}
+event MurabahaInitiated {
+ --> Murabaha contract
+  --> member financier
+  
+}
+event MurabahaAccepted{
+ --> Murabaha contract
+  --> member buyer
+  
 }
