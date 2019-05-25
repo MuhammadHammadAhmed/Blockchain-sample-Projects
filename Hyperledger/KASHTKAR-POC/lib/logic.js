@@ -14,57 +14,123 @@
 
 /* global getAssetRegistry getFactory emit */
 
+
 /**
  * Sample transaction processor function.
- * @param {org.example.basic.SampleTransaction} tx The sample transaction instance.
+ * @param {org.example.basic.initFarmInput} arg The sample transaction instance.
  * @transaction
  */
-async function sampleTransaction(tx) {  // eslint-disable-line no-unused-vars
-
-  // Save the old value of the asset.
-  const oldValue = tx.asset.value;
-
-  // Update the asset with the new value.
-  tx.asset.value = tx.newValue;
-
-  // Get the asset registry for the asset.
-  const assetRegistry = await getAssetRegistry('org.example.basic.SampleAsset');
-  // Update the asset in the asset registry.
-  await assetRegistry.update(tx.asset);
-
-  // Emit an event for the modified asset.
-  let event = getFactory().newEvent('org.example.basic', 'SampleEvent');
-  event.asset = tx.asset;
-  event.oldValue = oldValue;
-  event.newValue = tx.newValue;
-  emit(event);
+async function initFarmInput(arg){
+  
+  const NS= 'org.example.basic';// namesspace
+  const factory = getFactory();
+  let productId = arg.productId;
+  let  farmInput =factory.newResource(NS,'FarmInput',productId);
+  
+  
+  farmInput.product = arg.product;
+  
+  farmInput.quantity = arg.quantity;
+  farmInput.unit = arg.unit;
+  farmInput.costPrice =arg.costPrice;
+  farmInput.status = "instantiated";
+  farmInput.unit=arg.unit;
+  farmInput.costPrice =arg.costPrice;
+  farmInput.issuer =arg.issuer;
+  farmInput.authorized = arg.issuer;
+  farmInput.currentOwner= arg.issuer;
+  
+  const assetregistry =await getAssetRegistry(NS+'.FarmInput');
+  await assetregistry.add(farmInput);
+ 
+}
+/**
+ *  transaction to book asset.
+ * @param {org.example.basic.bookAsset} arg The sample transaction instance.
+ * @transaction
+ */
+async function bookAsset(arg) {
+  
+   const NS = 'org.example.basic';// namesspace
+ const asset =arg.underlyingAsset;
+  let authorize = arg.buyer;
+  asset.authorized = authorize;
+  asset.status="waad";
+  
+  const assetRegistry =await getAssetRegistry(NS+'.FarmInput');
+   await assetRegistry.update(asset);                                           
+  
+}
+/**
+* Transaction to initialize Murabaha
+* @param {org.example.basic.initMurabaha} arg  the transaction instance
+* @transaction
+*/
+async function initMurabaha(arg) {
+  
+  const NS ='org.example.basic';
+  
+  let asset = arg.underlyingAsset;
+  let buyer= arg.buyer;
+  let seller = asset.authorized;
+  let date = new Date();
+  let contractId =buyer.getIdentifier() + "|" + asset.authorized.getIdentifier()+"|"+ +asset.getIdentifier() +"|" + date.toISOString();
+  
+  
+  let factory = getFactory();
+  let  murabaha = await factory.newResource(NS,'Murabaha',contractId);
+ let paymentDate =new Date();
+  paymentDate.setDate(paymentDate.getDate() +180);
+   murabaha.contractDate=date;
+  murabaha.seller= seller;
+  murabaha.buyer =buyer;
+  asset.currentOwner = seller;
+  murabaha.asset=asset;
+  murabaha.costPrice = asset.costPrice;
+  murabaha.sellingPrice =asset.currentPrice;
+  murabaha.paymentDate= paymentDate;
+  murabaha.buyerSignature="unsigned";
+   murabaha.sellerSignature="signed";
+  asset.status="Issued";
+  let assetRegistry =await getAssetRegistry(NS+'.Murabaha');
+  await assetRegistry.add(murabaha);
+  //updating the FarmInput
+  return getAssetRegistry(NS +'.FarmInput')
+  .then(function (farmInputRegistry) {
+    
+    return farmInputRegistry.update(asset);
+  })
+  .catch(function (error) {
+    // Add optional error handling here.
+  });
+   
 }
 
 /**
-* Sample transaction processor function.
-* @param {org.example.basic.issueFarmInput} arg The sample transaction instance.
+* Transaction to initialize Murabaha
+* @param {org.example.basic.acceptMurabaha} arg  the transaction instance
 * @transaction
 */
-async function issueFarmInput(arg){
-
-const NS= 'org.example.basic';// namesspace
-const factory = getFactory();
-let productId = arg.productId;
-let  farmInput =factory.newResource(NS,'FarmInput',productId);
-
-
-farmInput.product = arg.product;
-
-farmInput.quantity = arg.quantity;
-farmInput.unit = arg.unit;
-farmInput.costPrice =arg.costPrice;
-farmInput.status = "Issued";
-farmInput.unit=arg.unit;
-farmInput.costPrice =arg.costPrice;
-farmInput.issuer =arg.issuer;
-farmInput.currentOwner= arg.issuer;
-
-const assetregistry =await getAssetRegistry(NS+'.FarmInput');
-await assetregistry.add(farmInput);
-
+async function acceptMurabaha(arg) {
+  const NS ='org.example.basic';
+  let murabaha = arg.contract;
+  let buyer =  arg.farmer;
+  let asset = murabaha.asset; 
+  murabaha.buyerSignature="signed";
+ // murabaha.contractDate = new Date();
+ asset.status= "Sold";
+  asset.currentOwner= buyer;
+   let assetRegistry =await getAssetRegistry(NS+'.Murabaha');
+  await assetRegistry.update(murabaha)
+  
+  
+  return getAssetRegistry(NS +'.FarmInput')
+  .then(function (farmInputRegistry) {
+    
+     farmInputRegistry.update(asset);
+  });
+  
+  
+ ;
+  
 }
