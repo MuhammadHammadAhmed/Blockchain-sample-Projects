@@ -1,0 +1,172 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Sample business network definition.
+ */
+namespace org.example.basic
+//namespace org.kashtkar.network
+/* Custom Dara types used in the project---------------------
+it includes FarmProduct, Unit
+*/
+// enum to define Type of Product
+enum FarmProduct{
+  o Fertilizer
+  o Seeds
+  o Pesticides
+  o Equipment
+}
+enum Unit {
+  o kg
+  o litre
+  o nos
+  o meter
+  o lbs
+ 
+}
+enum Signature {
+  o unsigned
+  o signed
+}
+enum Status{
+  o instantiated
+  o waad
+  o Issued
+  o Sold
+  o Redeem
+}
+enum ParticipantType {
+  o Farmer
+  o Financier
+  o Supplier
+}
+/* -----end of custom Data types--*/
+
+/*----Start of Assets--
+it includes Murabaha,FarmInput,bookAsset
+*/
+
+//Murabaha contract as Asset
+asset Murabaha identified by contractId{
+  o String contractId
+  o DateTime contractDate
+  --> member seller
+  --> member buyer
+  o  String underlyingAsset
+  o Integer costPrice
+  o Integer sellingPrice
+  o DateTime paymentDate
+  o Signature sellerSignature
+  o Signature buyerSignature
+}
+//Farm input as an Asset
+asset FarmInput identified by productId {
+  o String productId
+  o FarmProduct product
+  o Status status
+  o Integer quantity
+  o Unit unit
+  o Integer costPrice
+  o Integer currentPrice  optional
+  --> member issuer
+  -->member currentOwner
+  --> member authorized  optional
+  
+}
+/* End of Assets---*/
+
+/*-- Participants of the Network--*/
+participant member identified by ntn{
+  o String Name
+  o String ntn
+  o ParticipantType  memberType
+}
+/*-----Transactions pertaining to the network----
+it includes
+initFarmInput,bookAsset,requestAsset,initMurabaha, acceptMurabaha
+*/
+ //reserve asset by the financier
+transaction bookAsset {
+  -->FarmInput underlyingAsset
+  --> member buyer
+}
+transaction initFarmInput {
+  o String productId
+  o FarmProduct product
+  -->member issuer
+  o Integer quantity
+  o Unit unit
+  o Integer costPrice
+  
+   
+}
+transaction updatePrice{
+  o String productId
+  o Integer price
+}
+  transaction requestAsset {
+    --> member buyer
+    --> FarmInput  underlyingAsset
+  }
+
+transaction initMurabaha {
+
+  --> member buyer
+  o String underlyingAsset
+ 
+}
+ transaction acceptMurabaha {
+   -->Murabaha contract
+   -->member farmer
+ }
+/*---End of Transaction---*/
+/*
+participant SampleParticipant identified by participantId {
+  o String participantId
+  o String firstName
+  o String lastName
+}
+
+transaction SampleTransaction {
+ // --> SampleAsset asset
+  o String newValue
+}
+
+event SampleEvent {
+ // --> SampleAsset asset
+  o String oldValue
+  o String newValue
+}*/
+/*---Start of Events---------*/
+
+event BookFarmInput {
+ --> FarmInput asset
+ --> member financier
+  
+}
+event AssetRequested {
+ --> FarmInput asset
+  --> member buer
+  
+}
+event MurabahaInitiated {
+ --> Murabaha contract
+  --> member financier
+  
+}
+event MurabahaAccepted{
+ --> Murabaha contract
+  --> member buyer
+  
+}

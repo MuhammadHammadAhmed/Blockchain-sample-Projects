@@ -1,0 +1,12 @@
+query selectFarmInput{
+    description: "select Farm input by Id"
+    statement:
+        SELECT org.example.basic.FarmInput
+            WHERE (productId ==_$pId)
+}
+query FarmInputbyStatus{
+    description: "get Farm inputs by status"
+    statement:
+        SELECT org.example.basic.FarmInput
+            WHERE (status ==_$status)
+}
