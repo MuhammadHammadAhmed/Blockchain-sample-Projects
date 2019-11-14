@@ -1,0 +1,114 @@
+[
+{
+"state": {
+"data": {
+"@class": "com.example.states.GoodsState",
+"seller": "O=Seller, L=Lahorek, C=PK",
+"assetOwner": "O=Seller, L=Lahorek, C=PK",
+"client": "O=Seller, L=Lahorek, C=PK",
+"internalReference": "PR-1",
+"asset": "Barley",
+"takaful": false,
+"owner": "O=Seller, L=Lahorek, C=PK",
+"participants": [
+"O=Seller, L=Lahorek, C=PK"
+]
+},
+"contract": "com.example.contracts.GoodsContract",
+"notary": "O=Notary, L=London, C=GB",
+"encumbrance": null,
+"constraint": {
+"@class": "net.corda.core.contracts.SignatureAttachmentConstraint",
+"key": "aSq9DsNNvGhYxYyqA9wd2eduEAZ5AXWgJTbTEw3G5d2maAq8vtLE4kZHgCs5jcB1N31cx1hpsLeqG2ngSysVHqcXhbNts6SkRWDaV7xNcr6MtcbufGUchxredBb6"
+}
+},
+"ref": {
+"txhash": "35D635B15CEE1B1A67347DDCC71B0A100BE6A5D4FC7DC785A153BAD79FB8E8E6",
+"index": 1
+}
+},
+{
+"state": {
+"data": {
+"@class": "com.example.states.GoodsState",
+"seller": "O=Seller, L=Lahorek, C=PK",
+"assetOwner": "O=Seller, L=Lahorek, C=PK",
+"client": "O=Seller, L=Lahorek, C=PK",
+"internalReference": "PR-4",
+"asset": "Steel",
+"takaful": false,
+"owner": "O=Seller, L=Lahorek, C=PK",
+"participants": [
+"O=Seller, L=Lahorek, C=PK"
+]
+},
+"contract": "com.example.contracts.GoodsContract",
+"notary": "O=Notary, L=London, C=GB",
+"encumbrance": null,
+"constraint": {
+"@class": "net.corda.core.contracts.SignatureAttachmentConstraint",
+"key": "aSq9DsNNvGhYxYyqA9wd2eduEAZ5AXWgJTbTEw3G5d2maAq8vtLE4kZHgCs5jcB1N31cx1hpsLeqG2ngSysVHqcXhbNts6SkRWDaV7xNcr6MtcbufGUchxredBb6"
+}
+},
+"ref": {
+"txhash": "09C5F61D02B1A27B2B1F47725E20BAC2554C3D73E25C9D84B69370373B500184",
+"index": 1
+}
+},
+{
+"state": {
+"data": {
+"@class": "com.example.states.GoodsState",
+"seller": "O=Seller, L=Lahorek, C=PK",
+"assetOwner": "O=Seller, L=Lahorek, C=PK",
+"client": "O=Seller, L=Lahorek, C=PK",
+"internalReference": "PR-5",
+"asset": "Cement",
+"takaful": false,
+"owner": "O=Seller, L=Lahorek, C=PK",
+"participants": [
+"O=Seller, L=Lahorek, C=PK"
+]
+},
+"contract": "com.example.contracts.GoodsContract",
+"notary": "O=Notary, L=London, C=GB",
+"encumbrance": null,
+"constraint": {
+"@class": "net.corda.core.contracts.SignatureAttachmentConstraint",
+"key": "aSq9DsNNvGhYxYyqA9wd2eduEAZ5AXWgJTbTEw3G5d2maAq8vtLE4kZHgCs5jcB1N31cx1hpsLeqG2ngSysVHqcXhbNts6SkRWDaV7xNcr6MtcbufGUchxredBb6"
+}
+},
+"ref": {
+"txhash": "A230C3A52E63D3B33BD2454550362AC88B58F05D8EDBFA757DD93E1C16AB55BD",
+"index": 1
+}
+},
+{
+"state": {
+"data": {
+"@class": "com.example.states.GoodsState",
+"seller": "O=Seller, L=Lahorek, C=PK",
+"assetOwner": "O=Seller, L=Lahorek, C=PK",
+"client": "O=Seller, L=Lahorek, C=PK",
+"internalReference": "PR-6",
+"asset": "Chair",
+"takaful": false,
+"owner": "O=Seller, L=Lahorek, C=PK",
+"participants": [
+"O=Seller, L=Lahorek, C=PK"
+]
+},
+"contract": "com.example.contracts.GoodsContract",
+"notary": "O=Notary, L=London, C=GB",
+"encumbrance": null,
+"constraint": {
+"@class": "net.corda.core.contracts.SignatureAttachmentConstraint",
+"key": "aSq9DsNNvGhYxYyqA9wd2eduEAZ5AXWgJTbTEw3G5d2maAq8vtLE4kZHgCs5jcB1N31cx1hpsLeqG2ngSysVHqcXhbNts6SkRWDaV7xNcr6MtcbufGUchxredBb6"
+}
+},
+"ref": {
+"txhash": "B08073FD6033D839519FA74EDF02B97D09423FFE8E8943AF07A1B9FCAEDAFAB9",
+"index": 1
+}
+}
+]
